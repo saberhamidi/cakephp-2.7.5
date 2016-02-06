@@ -8,7 +8,23 @@ class AppController extends Controller {
 	 * @var array
 	 */
 	public $components = array(
-		'Flash','DebugKit.Toolbar',
+		'Flash','DebugKit.Toolbar', 'RequestHandler',
+
+		'Auth' => array(
+			'authenticate' => array(
+				'Form' => array(
+					'fields' => array(
+						'username' => 'restaurant_id',
+						'password' => 'password'
+					),
+
+					'passwordHasher' => 'Blowfish',
+				),
+			),
+			'loginRedirect' => '/campaigns',
+			'logoutRedirect' => '/',
+		),
+
 	);
 
 	/**
@@ -37,6 +53,8 @@ class AppController extends Controller {
 	 */
 	public function beforeFilter() {
 		parent::beforeFilter();
+ 		$this->Auth->loginAction = array( 'controller' => '/');
+		$this->Auth->allow('restaurants','login');
 	}
 
 	/**
